@@ -17,7 +17,7 @@ def comenzar_juego():
     print("Hola! Bienvenido a la 'Sopa de letras' en python, esperamos que te diviertas.")
     print("\nNiveles de dificultad:\n1. Facil\n2. Intermedio\n3. Dificil\n4. Extremo")
 
-    dificultad = 9
+    dificultad = 0
 
     while (dificultad < 1 or dificultad > 4):
         try:
