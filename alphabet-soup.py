@@ -1,3 +1,5 @@
+from random import randint
+
 # Variables necesarias
 sopa_de_letras = []
 
@@ -8,9 +10,31 @@ def mostrar_sopa(sopa):
             print(columna, end=" ")
         print()
 
+# Funcion para seleccionar palabras del archivo | ARGS: { 1: 'Nivel de dificultad' }
+def seleccionar_palabras(dificultad):
+    palabras_seleccionadas = []
+
+    archivo = open("palabras.txt", "rt")
+    linea = archivo.readline()
+
+    contador = 0
+
+    n1 = 5
+    n2 = 14
+
+    while linea:
+        palabra = linea.rstrip("\n")
+        linea = archivo.readline()
+        
+        if contador >= n1 and contador <= n2:
+            palabras_seleccionadas.append(palabra)
+
+        contador += 1
+
+
 # Funcion para generar la sopa de letras | Args: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
-    print(dificultad)
+    palabras = seleccionar_palabras(dificultad)
 
 # Funcion para comenzar el juego | ARGS: {}
 def comenzar_juego():
@@ -26,7 +50,6 @@ def comenzar_juego():
             print("[ERROR] Debes ingresar un nivel de dificultad valido.")
 
     generar_sopa(dificultad)
-
 
 if __name__ == '__main__':
     comenzar_juego()
