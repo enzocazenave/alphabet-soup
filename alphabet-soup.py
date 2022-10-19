@@ -36,6 +36,8 @@ def buscar_palabra(cantidad_caracteres):
     archivo = open('palabras.txt')
     nueva_palabra = archivo.readline().rstrip("\n")
 
+    archivo.close()
+
     if len(nueva_palabra) <= cantidad_caracteres:
         if not nueva_palabra in palabras_seleccionadas:
             return nueva_palabra
