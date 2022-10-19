@@ -27,9 +27,9 @@ from random import randint
 
 # Variables necesarias
 sopa_de_letras = []
+palabras_seleccionadas = []
 nivel_dificultad = [10, 12, 14, 20]
 abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-palabras_seleccionadas = []
 
 # Funcion que por medio de recursividad busca una palabra | PARAMETROS: { 1: 'Palabra' }
 def buscar_palabra(cantidad_caracteres):
@@ -105,7 +105,6 @@ def generar_sopa(dificultad):
 
     for index, palabra in enumerate(palabras):
         lista_caracteres = list(palabra)
-        print(lista_caracteres)
 
         for c in range(cantidad_f_c):
             try:
