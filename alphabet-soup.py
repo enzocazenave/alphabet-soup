@@ -31,32 +31,47 @@ palabras_seleccionadas = []
 nivel_dificultad = [10, 12, 14, 20]
 abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
+# Funcion para cerrar archivos | PARAMETROS: { 1: 'Archivo' }
+def cerrar_archivo(archivo):
+    try:
+        archivo.close()
+    except NameError:
+        print("[ERROR] Archivo no encontrado")
+        pass
+
 # Funcion que por medio de recursividad busca una palabra | PARAMETROS: { 1: 'Palabra' }
 def buscar_palabra(cantidad_caracteres):
-    archivo = open('palabras.txt')
-    nueva_palabra = archivo.readline().rstrip("\n")
+    try:
+        archivo = open('palabras.txt')
+        nueva_palabra = archivo.readline().rstrip("\n")
 
-    archivo.close()
-
-    if len(nueva_palabra) <= cantidad_caracteres:
-        if not nueva_palabra in palabras_seleccionadas:
-            return nueva_palabra
+        if len(nueva_palabra) <= cantidad_caracteres:
+            if not nueva_palabra in palabras_seleccionadas:
+                return nueva_palabra
+            else:
+                return buscar_palabra(cantidad_caracteres)
         else:
             return buscar_palabra(cantidad_caracteres)
-    else:
-        return buscar_palabra(cantidad_caracteres)
+    except:
+        print("[ERROR] Ocurrio un error al abrir el archivo")
+    finally:
+        cerrar_archivo(archivo)
         
 # Funcion que devuelve cantidad de palabras en el archivo | PARAMETROS: {}
 def contar_palabras():
-    archivo = open("palabras.txt")
-    contador = 0
+    try:
+        archivo = open("palabras.txt")
+        contador = 0
 
-    while archivo.readline() != "":
-        contador += 1
+        while archivo.readline() != "":
+            contador += 1
 
-    archivo.close()
+        return contador
+    except:
+        print("[ERROR] Ocurrio un error al abrir el archivo")
+    finally:
+        cerrar_archivo(archivo)
 
-    return contador
 
 # Funcion para mostrar la sopa de letras | PARAMETROS: { 1: 'Matriz de sopa de letras' }
 def mostrar_sopa(sopa):
@@ -68,32 +83,37 @@ def mostrar_sopa(sopa):
 
 # Funcion para seleccionar palabras del archivo | PARAMETROS: { 1: 'Nivel de dificultad' }
 def seleccionar_palabras(dificultad):
-    cantidad_palabras = contar_palabras()
-    cantidad_caracteres = nivel_dificultad[dificultad - 1]
-
-    archivo = open("palabras.txt")
-    linea = archivo.readline()
-
-    contador = 0
-    
-    n1 = randint(0, cantidad_palabras - cantidad_caracteres) 
-    n2 = n1 + cantidad_caracteres
-
-    while linea:
-        palabra = linea.rstrip("\n")
-        
-        if contador >= n1 and contador < n2:
-            if len(palabra) > cantidad_caracteres:
-                nueva_palabra = buscar_palabra(cantidad_caracteres)
-                palabras_seleccionadas.append(nueva_palabra)
-            else:
-                palabras_seleccionadas.append(palabra)
-
-        contador += 1
+    try:
+        archivo = open("palabras.txt")
         linea = archivo.readline()
 
-    archivo.close()
-    return palabras_seleccionadas
+        cantidad_palabras = contar_palabras()
+        cantidad_caracteres = nivel_dificultad[dificultad - 1]
+
+        contador = 0
+
+        n1 = randint(0, cantidad_palabras - cantidad_caracteres) 
+        n2 = n1 + cantidad_caracteres
+
+        while linea:
+            palabra = linea.rstrip("\n")
+
+            if contador >= n1 and contador < n2:
+                if len(palabra) > cantidad_caracteres:
+                    nueva_palabra = buscar_palabra(cantidad_caracteres)
+                    palabras_seleccionadas.append(nueva_palabra)
+                else:
+                    palabras_seleccionadas.append(palabra)
+
+            contador += 1
+            linea = archivo.readline()
+
+        return palabras_seleccionadas
+    except:
+        print("[ERROR] Ocurrio un error al abrir el archivo")
+    finally:
+        cerrar_archivo(archivo)
+
 
 # Funcion para generar la sopa de letras | PARAMETROS: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
@@ -114,8 +134,6 @@ def generar_sopa(dificultad):
             except IndexError:
                 sopa_de_letras[index][c] = abecedario[randint(0,26)]
 
-    mostrar_sopa(sopa_de_letras)
-
 # Funcion para comenzar el juego | PARAMETROS: {}
 def comenzar_juego():
     print("Hola! Bienvenido a la 'Sopa de letras' en python, esperamos que te diviertas.")
@@ -130,6 +148,7 @@ def comenzar_juego():
             print("[ERROR] Debes ingresar un nivel de dificultad valido entre 1 y 4.")
 
     generar_sopa(dificultad)
+    mostrar_sopa(sopa_de_letras)
 
 if __name__ == '__main__':
     comenzar_juego()
