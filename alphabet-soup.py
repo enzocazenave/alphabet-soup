@@ -2,17 +2,17 @@
     NIVELES_DIFICULTAD: {
         FACIL: {
             6 PALABRAS,
-            10x10,
+            12x12,
             HORIZONTALES
         },
         INTERMEDIO: {
             7 PALABRAS,
-            12x12,
+            14x14,
             HORIZONTALES Y VERTICALES
         },
         DIFICIL: {
             8 PALABRAS,
-            14x14,
+            16x16,
             HORIZONTALES, VERTICALES Y DIAGONALES
         },
         EXTREMO: {
