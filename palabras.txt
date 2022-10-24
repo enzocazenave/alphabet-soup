@@ -7,7 +7,6 @@ tortuga
 perro
 gato
 arbol
-palo
 estufa
 televisor
 control
@@ -31,11 +30,8 @@ cara
 ropa
 remera
 corbata
-sobre
 sillon
 mesa
-dia
-mes
 teclado
 camara
 estante
@@ -48,3 +44,7 @@ oregano
 dorado
 azul
 microfono
+monitor
+facultad
+escuela
+casa
