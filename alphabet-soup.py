@@ -23,6 +23,7 @@
     }
 """
 
+import os
 from random import randint
 
 # Variables necesarias
@@ -34,6 +35,15 @@ nivel_dificultad = [{ "palabras": 6, "cantidad_f_c": 12 },{ "palabras": 7, "cant
 abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 abecedario_especial = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
+# Funcion para borrar la sopa de letras y actualizarla | PARAMETROS: {}
+def borrar_consola():
+    so = os.name
+
+    if so == "posix":
+        os.system("clear")
+    elif so == "ce" or so == "nt" or so == "dos":
+        os.system("cls")
+
 # Funcion para resalatar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
 def encontrar_palabra(palabra):
     caracteres_palabra = list(palabra["palabra"])
@@ -44,7 +54,7 @@ def encontrar_palabra(palabra):
         letra_index = abecedario.index(letra)
         caracter_especial = abecedario_especial[letra_index]
         caracteres_palabra_especial.append(caracter_especial)
-        
+
     if palabra["orientacion"] == 0:
         for c in range(palabra["inicio"], len(sopa_de_letras)):
             try:
@@ -59,8 +69,6 @@ def encontrar_palabra(palabra):
                 contador += 1
             except IndexError:
                 break
-
-    mostrar_sopa()
 
 # Funcion para revisar si entre la palabra en esa posicion | PARAMETROS: { 1: 'Palabra', 2: 'Orientacion', 3: 'Inicio', 4: 'Fila / Columna' }
 def revisar_posicion(palabra, orientacion, inicio, fila_columna):
@@ -256,6 +264,7 @@ def seleccionar_palabras(dificultad):
     finally:
         archivo_palabras.seek(0)       
 
+# Funcion para rellenar la matriz con letras alaeatorias | PARAMETROS: {}
 def rellenar_matriz():
     for f in range(len(sopa_de_letras)):
         for c in range(len(sopa_de_letras)):
@@ -282,6 +291,30 @@ def generar_sopa(dificultad):
         
     rellenar_matriz()
 
+# Funcion para preguntar al usuario la palabra encontrada | PARAMETROS: {}
+def input_encontrar():
+    while len(palabras_ingresadas) > 0:
+        palabra_encontrada = input("Ingresa palabra encontrada: ")
+        palabra_encontrada_info = {}
+        encontrada = False
+
+        for palabra in palabras_ingresadas:
+            if palabra["palabra"] == palabra_encontrada:
+                encontrada = True
+                palabra_encontrada_info = palabra
+                break
+            
+        if encontrada:
+            borrar_consola()
+            print(f"Felicitaciones, encontraste la palabra '{ palabra_encontrada }'!")
+            encontrar_palabra(palabra_encontrada_info)
+            palabras_ingresadas.remove(palabra_encontrada_info)
+            mostrar_sopa()
+        else:
+            print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
+    else:
+        print("Felicitaciones, encontraste todas las palabras! Esperamos verte por aquí de nuevo!")
+
 # Funcion para comenzar el juego | PARAMETROS: {}
 def comenzar_juego():
     print("\nHola! Bienvenido a la 'Sopa de letras' en python, esperamos que te diviertas.")
@@ -298,29 +331,8 @@ def comenzar_juego():
     generar_sopa(dificultad)
     cerrar_archivo()
     mostrar_sopa()
+    input_encontrar()
 
 if __name__ == '__main__':
     comenzar_juego()
 
-    while len(palabras_ingresadas) > 0:
-        palabra_encontrada = input("Ingresa palabra encontrada: ")
-        palabra_encontrada_info = {}
-        encontrada = False
-
-        for palabra in palabras_ingresadas:
-            if palabra["palabra"] == palabra_encontrada:
-                encontrada = True
-                palabra_encontrada_info = palabra
-                break
-            
-        if encontrada:
-            print(f"Felicitaciones, encontraste la palabra '{ palabra_encontrada }'!")
-            encontrar_palabra(palabra_encontrada_info)
-            palabras_ingresadas.remove(palabra_encontrada_info)
-        else:
-            print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
-    else:
-        print("Felicitaciones, encontraste todas las palabras!\n")
-        for palabra in palabras_seleccionadas:
-            print(palabra)
-        print("\nEsperamos verte por aquí de nuevo!")
