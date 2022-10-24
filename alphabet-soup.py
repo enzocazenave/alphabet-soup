@@ -29,8 +29,38 @@ from random import randint
 archivo_palabras = open("palabras.txt")
 sopa_de_letras = []
 palabras_seleccionadas = []
+palabras_ingresadas = []
 nivel_dificultad = [{ "palabras": 6, "cantidad_f_c": 12 },{ "palabras": 7, "cantidad_f_c": 14 },{ "palabras": 8, "cantidad_f_c": 16 },{ "palabras": 12, "cantidad_f_c": 20 }]
 abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+abecedario_especial = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+# Funcion para resalatar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
+def encontrar_palabra(palabra):
+    caracteres_palabra = list(palabra["palabra"])
+    caracteres_palabra_especial = []
+    contador = 0
+
+    for letra in caracteres_palabra:
+        letra_index = abecedario.index(letra)
+        caracter_especial = abecedario_especial[letra_index]
+        caracteres_palabra_especial.append(caracter_especial)
+        
+    if palabra["orientacion"] == 0:
+        for c in range(palabra["inicio"], len(sopa_de_letras)):
+            try:
+                sopa_de_letras[palabra["fila"]][c] = caracteres_palabra_especial[contador]
+                contador += 1
+            except IndexError:
+                break
+    elif palabra["orientacion"] == 1:
+        for f in range(palabra["inicio"], len(sopa_de_letras)):
+            try:
+                sopa_de_letras[f][palabra["columna"]] = caracteres_palabra_especial[contador]
+                contador += 1
+            except IndexError:
+                break
+
+    mostrar_sopa()
 
 # Funcion para revisar si entre la palabra en esa posicion | PARAMETROS: { 1: 'Palabra', 2: 'Orientacion', 3: 'Inicio', 4: 'Fila / Columna' }
 def revisar_posicion(palabra, orientacion, inicio, fila_columna):
@@ -101,6 +131,13 @@ def insertar_horizontal(palabra):
                     contador += 1
             except IndexError:
                 break
+
+        palabras_ingresadas.append({
+            "palabra": palabra,
+            "orientacion": 0,
+            "fila": fila,
+            "inicio": inicio
+        })
         
 # Funcion para insertar palabras en vertical | PARAMETROS: { 1: 'Palabra' }
 def insertar_vertical(palabra):
@@ -132,6 +169,13 @@ def insertar_vertical(palabra):
                     contador += 1
             except IndexError:
                 break
+
+        palabras_ingresadas.append({
+            "palabra": palabra,
+            "orientacion": 1,
+            "columna": columna,
+            "inicio": inicio
+        })
 
 # Funcion para cerrar archivos | PARAMETROS: { 1: 'Archivo' }
 def cerrar_archivo():
@@ -216,7 +260,7 @@ def rellenar_matriz():
     for f in range(len(sopa_de_letras)):
         for c in range(len(sopa_de_letras)):
             if sopa_de_letras[f][c] == "":
-                sopa_de_letras[f][c] = "-"#abecedario[randint(0,26)]
+                sopa_de_letras[f][c] = abecedario[randint(0,26)]
 
 # Funcion para generar la sopa de letras | PARAMETROS: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
@@ -257,3 +301,26 @@ def comenzar_juego():
 
 if __name__ == '__main__':
     comenzar_juego()
+
+    while len(palabras_ingresadas) > 0:
+        palabra_encontrada = input("Ingresa palabra encontrada: ")
+        palabra_encontrada_info = {}
+        encontrada = False
+
+        for palabra in palabras_ingresadas:
+            if palabra["palabra"] == palabra_encontrada:
+                encontrada = True
+                palabra_encontrada_info = palabra
+                break
+            
+        if encontrada:
+            print(f"Felicitaciones, encontraste la palabra '{ palabra_encontrada }'!")
+            encontrar_palabra(palabra_encontrada_info)
+            palabras_ingresadas.remove(palabra_encontrada_info)
+        else:
+            print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
+    else:
+        print("Felicitaciones, encontraste todas las palabras!\n")
+        for palabra in palabras_seleccionadas:
+            print(palabra)
+        print("\nEsperamos verte por aquí de nuevo!")
