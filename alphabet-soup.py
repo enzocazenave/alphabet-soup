@@ -309,6 +309,7 @@ def input_encontrar():
             print(f"Felicitaciones, encontraste la palabra '{ palabra_encontrada }'!")
             encontrar_palabra(palabra_encontrada_info)
             palabras_ingresadas.remove(palabra_encontrada_info)
+            print(f"Te quedan por encontrar { len(palabras_ingresadas) } palabras!")
             mostrar_sopa()
         else:
             print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
@@ -333,6 +334,4 @@ def comenzar_juego():
     mostrar_sopa()
     input_encontrar()
 
-if __name__ == '__main__':
-    comenzar_juego()
-
+comenzar_juego()
