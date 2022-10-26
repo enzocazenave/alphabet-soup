@@ -70,7 +70,7 @@ def encontrar_palabra(palabra):
             except IndexError:
                 break
 
-# Funcion para revisar si entre la palabra en esa posicion | PARAMETROS: { 1: 'Palabra', 2: 'Orientacion', 3: 'Inicio', 4: 'Fila / Columna' }
+# Funcion para revisar si entra la palabra en esa posicion | PARAMETROS: { 1: 'Palabra', 2: 'Orientacion', 3: 'Inicio', 4: 'Fila / Columna' }
 def revisar_posicion(palabra, orientacion, inicio, fila_columna):
     entra = False
     contador = 0
@@ -294,7 +294,7 @@ def generar_sopa(dificultad):
 # Funcion para preguntar al usuario la palabra encontrada | PARAMETROS: {}
 def input_encontrar():
     while len(palabras_ingresadas) > 0:
-        palabra_encontrada = input("Ingresa palabra encontrada: ")
+        palabra_encontrada = input("Ingresa palabra encontrada: ").lower()
         palabra_encontrada_info = {}
         encontrada = False
 
