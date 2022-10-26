@@ -237,8 +237,8 @@ def seleccionar_palabras(dificultad):
         linea = archivo_palabras.readline()
 
         cantidad_palabras = contar_palabras()
-        cantidad_f_c = nivel_dificultad[dificultad - 1]["cantidad_f_c"]
-        cantidad_palabras_seleccionadas = nivel_dificultad[dificultad - 1]["palabras"]
+        cantidad_f_c = nivel_dificultad[dificultad]["cantidad_f_c"]
+        cantidad_palabras_seleccionadas = nivel_dificultad[dificultad]["palabras"]
 
         contador = 0
 
@@ -274,7 +274,7 @@ def rellenar_matriz():
 # Funcion para generar la sopa de letras | PARAMETROS: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
     palabras = seleccionar_palabras(dificultad)
-    cantidad_f_c = nivel_dificultad[dificultad - 1]["cantidad_f_c"]
+    cantidad_f_c = nivel_dificultad[dificultad]["cantidad_f_c"]
 
     for f in range(cantidad_f_c):
         sopa_de_letras.append([])
@@ -288,6 +288,7 @@ def generar_sopa(dificultad):
             insertar_horizontal(palabra)
         elif orientacion == 1:
             insertar_vertical(palabra)
+    
         
     rellenar_matriz()
 
@@ -329,7 +330,7 @@ def comenzar_juego():
         except ValueError:
             print("[ERROR] Debes ingresar un nivel de dificultad valido entre 1 y 4.")
 
-    generar_sopa(dificultad)
+    generar_sopa(dificultad - 1)
     cerrar_archivo()
     mostrar_sopa()
     input_encontrar()
