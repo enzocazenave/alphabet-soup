@@ -13,12 +13,12 @@
         DIFICIL: {
             8 PALABRAS,
             16x16,
-            HORIZONTALES, VERTICALES Y DIAGONALES
+            HORIZONTALES, VERTICALES.
         },
         EXTREMO: {
             12 PALABRAS,
             20x20,
-            HORIZONTALES, VERTICALES, DIAGONALES Y PALABRAS ESCRITAS AL REVES
+            HORIZONTALES, VERTICALES Y AL REVES.
         }
     }
 """
@@ -43,6 +43,20 @@ def borrar_consola():
         os.system("clear")
     elif so == "ce" or so == "nt" or so == "dos":
         os.system("cls")
+
+def mostrar_palabras_restantes():
+    for palabra in palabras_ingresadas:
+        orientacion = ''
+        fila_columna = ''
+
+        if palabra["orientacion"] == 0:
+            orientacion = 'Horizontal'
+            fila_columna = f"Fila: { palabra['fila'] }"
+        else:
+            orientacion = 'Vertical'
+            fila_columna = f"Columna: { palabra['columna'] }"
+
+        print(f"- { palabra['palabra'] } | {orientacion} | { fila_columna } | Inicia en: { palabra['inicio'] }")
 
 # Funcion para resalatar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
 def encontrar_palabra(palabra):
@@ -108,21 +122,29 @@ def revisar_posicion(palabra, orientacion, inicio, fila_columna):
                 break
 
     return entra
-            
+
 # Funcion para insertar palabras en horizontal | PARAMETROS: { 1: 'Palabra' }
-def insertar_horizontal(palabra):
+def insertar_horizontal(palabra, dificultad):
     contador = 0
     caracteres_palabra = list(palabra)
+    palabra_a_ingresar = palabra
     longitud_palabra = len(caracteres_palabra)
     longitud_sopa = len(sopa_de_letras)
     fila = randint(0, longitud_sopa)
     
+    if dificultad == 3:
+        al_reves = randint(0, 1)
+
+        if al_reves == 0:
+            caracteres_palabra.reverse()
+            palabra_a_ingresar = palabra[::-1]
+
     if (longitud_sopa - longitud_palabra) > 0:
         inicio = randint(0, longitud_sopa  - longitud_palabra)
     else:
         inicio = 0
 
-    while not revisar_posicion(palabra, 0, inicio, fila):
+    while not revisar_posicion(palabra_a_ingresar, 0, inicio, fila):
         fila = randint(0, longitud_sopa)
 
         if (longitud_sopa - longitud_palabra) > 0:
@@ -143,24 +165,32 @@ def insertar_horizontal(palabra):
         palabras_ingresadas.append({
             "palabra": palabra,
             "orientacion": 0,
-            "fila": fila,
-            "inicio": inicio
+            "fila": fila + 1,
+            "inicio": inicio + 1
         })
         
 # Funcion para insertar palabras en vertical | PARAMETROS: { 1: 'Palabra' }
-def insertar_vertical(palabra):
+def insertar_vertical(palabra, dificultad):
     contador = 0
     caracteres_palabra = list(palabra)
+    palabra_a_ingresar = palabra
     longitud_palabra = len(caracteres_palabra)
     longitud_sopa = len(sopa_de_letras)
     columna = randint(0, longitud_sopa)
     
+    if dificultad == 3:
+        al_reves = randint(0, 1)
+
+        if al_reves == 0:
+            caracteres_palabra.reverse()
+            palabra_a_ingresar = palabra[::-1]
+
     if (longitud_sopa - longitud_palabra) > 0:
         inicio = randint(0, longitud_sopa  - longitud_palabra)
     else:
         inicio = 0
 
-    while not revisar_posicion(palabra, 1, inicio, columna):
+    while not revisar_posicion(palabra_a_ingresar, 1, inicio, columna):
         columna = randint(0, longitud_sopa)
 
         if (longitud_sopa - longitud_palabra) > 0:
@@ -181,8 +211,8 @@ def insertar_vertical(palabra):
         palabras_ingresadas.append({
             "palabra": palabra,
             "orientacion": 1,
-            "columna": columna,
-            "inicio": inicio
+            "columna": columna + 1,
+            "inicio": inicio + 1
         })
 
 # Funcion para cerrar archivos | PARAMETROS: { 1: 'Archivo' }
@@ -195,6 +225,7 @@ def cerrar_archivo():
 
 # Funcion que por medio de recursividad busca una palabra | PARAMETROS: { 1: 'Cantidad caracteres' }
 def buscar_palabra(cantidad_caracteres):
+    print('busque palabra nueva')
     try:
         nueva_palabra = archivo_palabras.readline().rstrip("\n")
 
@@ -244,6 +275,8 @@ def seleccionar_palabras(dificultad):
 
         n1 = randint(0, cantidad_palabras - cantidad_palabras_seleccionadas) 
         n2 = n1 + cantidad_palabras_seleccionadas
+        #n1 = 0
+        #n2 = 12
 
         while linea:
             palabra = linea.rstrip("\n")
@@ -257,6 +290,7 @@ def seleccionar_palabras(dificultad):
 
             contador += 1
             linea = archivo_palabras.readline()
+            
 
         return palabras_seleccionadas
     except:
@@ -285,20 +319,28 @@ def generar_sopa(dificultad):
         orientacion = randint(0,1)
 
         if orientacion == 0:
-            insertar_horizontal(palabra)
+            insertar_horizontal(palabra, dificultad)
         elif orientacion == 1:
-            insertar_vertical(palabra)
-    
+            insertar_vertical(palabra, dificultad)
         
     rellenar_matriz()
 
 # Funcion para preguntar al usuario la palabra encontrada | PARAMETROS: {}
 def input_encontrar():
+    print("Para salir del juego escribe 'salir', si no escribe la palabra que encontraste.")
+
     while len(palabras_ingresadas) > 0:
         palabra_encontrada = input("Ingresa palabra encontrada: ").lower()
         palabra_encontrada_info = {}
         encontrada = False
 
+        if palabra_encontrada == 'salir':
+            print("\n¿Por qué te vas antes de terminar? ¿No te há gustado el juego? :(\n")
+            print("PALABRAS QUE FALTARON ENCONTRAR: ")
+            mostrar_palabras_restantes()
+            print("\nJuego finalizado")
+            break
+ 
         for palabra in palabras_ingresadas:
             if palabra["palabra"] == palabra_encontrada:
                 encontrada = True
