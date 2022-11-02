@@ -324,7 +324,7 @@ def input_encontrar():
 
         if palabra_encontrada == 'salir':
             print("\n¿Por qué te vas antes de terminar? ¿No te há gustado el juego? :(\n")
-            print("PALABRAS QUE FALTARON ENCONTRAR: ")
+            print(f"PALABRAS QUE FALTARON ENCONTRAR: { len(palabras_ingresadas) }")
             mostrar_palabras_restantes()
             print("\nJuego finalizado")
             break
