@@ -44,6 +44,7 @@ def borrar_consola():
     elif so == "ce" or so == "nt" or so == "dos":
         os.system("cls")
 
+# Funcion para mostrar las palabras restantes | PARAMETROS: {}
 def mostrar_palabras_restantes():
     for palabra in palabras_ingresadas:
         orientacion = ''
@@ -165,8 +166,8 @@ def insertar_horizontal(palabra, dificultad):
         palabras_ingresadas.append({
             "palabra": palabra,
             "orientacion": 0,
-            "fila": fila + 1,
-            "inicio": inicio + 1
+            "fila": fila,
+            "inicio": inicio
         })
         
 # Funcion para insertar palabras en vertical | PARAMETROS: { 1: 'Palabra' }
@@ -211,8 +212,8 @@ def insertar_vertical(palabra, dificultad):
         palabras_ingresadas.append({
             "palabra": palabra,
             "orientacion": 1,
-            "columna": columna + 1,
-            "inicio": inicio + 1
+            "columna": columna,
+            "inicio": inicio
         })
 
 # Funcion para cerrar archivos | PARAMETROS: { 1: 'Archivo' }
@@ -225,7 +226,6 @@ def cerrar_archivo():
 
 # Funcion que por medio de recursividad busca una palabra | PARAMETROS: { 1: 'Cantidad caracteres' }
 def buscar_palabra(cantidad_caracteres):
-    print('busque palabra nueva')
     try:
         nueva_palabra = archivo_palabras.readline().rstrip("\n")
 
@@ -303,7 +303,7 @@ def rellenar_matriz():
     for f in range(len(sopa_de_letras)):
         for c in range(len(sopa_de_letras)):
             if sopa_de_letras[f][c] == "":
-                sopa_de_letras[f][c] = abecedario[randint(0,26)]
+                sopa_de_letras[f][c] = "-"#abecedario[randint(0,26)]
 
 # Funcion para generar la sopa de letras | PARAMETROS: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
@@ -323,7 +323,7 @@ def generar_sopa(dificultad):
         elif orientacion == 1:
             insertar_vertical(palabra, dificultad)
         
-    rellenar_matriz()
+    #rellenar_matriz()
 
 # Funcion para preguntar al usuario la palabra encontrada | PARAMETROS: {}
 def input_encontrar():
