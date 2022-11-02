@@ -340,7 +340,7 @@ def input_encontrar():
             encontrar_palabra(palabra_encontrada_info)
             palabras_ingresadas.remove(palabra_encontrada_info)
             print(f"Te quedan por encontrar { len(palabras_ingresadas) } palabras!")
-            print("\a")
+            print("\a\a")
             mostrar_sopa()
         else:
             print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
