@@ -52,18 +52,21 @@ def mostrar_palabras_restantes():
 
         if palabra["orientacion"] == 0:
             orientacion = 'Horizontal'
-            fila_columna = f"Fila: { palabra['fila'] }"
+            fila_columna = f"Fila: { palabra['fila'] + 1 }"
         else:
             orientacion = 'Vertical'
-            fila_columna = f"Columna: { palabra['columna'] }"
+            fila_columna = f"Columna: { palabra['columna'] + 1 }"
 
-        print(f"- { palabra['palabra'] } | {orientacion} | { fila_columna } | Inicia en: { palabra['inicio'] }")
+        print(f"- { palabra['palabra'] } | {orientacion} | { fila_columna } | Inicia en: { palabra['inicio'] + 1 }")
 
 # Funcion para resalatar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
 def encontrar_palabra(palabra):
     caracteres_palabra = list(palabra["palabra"])
     caracteres_palabra_especial = []
     contador = 0
+
+    if palabra["al_reves"] == 1:
+        caracteres_palabra.reverse()
 
     for letra in caracteres_palabra:
         letra_index = abecedario.index(letra)
@@ -132,11 +135,10 @@ def insertar_horizontal(palabra, dificultad):
     longitud_palabra = len(caracteres_palabra)
     longitud_sopa = len(sopa_de_letras)
     fila = randint(0, longitud_sopa)
+    al_reves = randint(0, 1)
     
     if dificultad == 3:
-        al_reves = randint(0, 1)
-
-        if al_reves == 0:
+        if al_reves == 1:
             caracteres_palabra.reverse()
             palabra_a_ingresar = palabra[::-1]
 
@@ -167,7 +169,8 @@ def insertar_horizontal(palabra, dificultad):
             "palabra": palabra,
             "orientacion": 0,
             "fila": fila,
-            "inicio": inicio
+            "inicio": inicio,
+            "al_reves": al_reves
         })
         
 # Funcion para insertar palabras en vertical | PARAMETROS: { 1: 'Palabra' }
@@ -178,11 +181,10 @@ def insertar_vertical(palabra, dificultad):
     longitud_palabra = len(caracteres_palabra)
     longitud_sopa = len(sopa_de_letras)
     columna = randint(0, longitud_sopa)
+    al_reves = randint(0, 1)
     
     if dificultad == 3:
-        al_reves = randint(0, 1)
-
-        if al_reves == 0:
+        if al_reves == 1:
             caracteres_palabra.reverse()
             palabra_a_ingresar = palabra[::-1]
 
@@ -213,7 +215,8 @@ def insertar_vertical(palabra, dificultad):
             "palabra": palabra,
             "orientacion": 1,
             "columna": columna,
-            "inicio": inicio
+            "inicio": inicio,
+            "al_reves": al_reves
         })
 
 # Funcion para cerrar archivos | PARAMETROS: { 1: 'Archivo' }
@@ -226,33 +229,25 @@ def cerrar_archivo():
 
 # Funcion que por medio de recursividad busca una palabra | PARAMETROS: { 1: 'Cantidad caracteres' }
 def buscar_palabra(cantidad_caracteres):
-    try:
-        nueva_palabra = archivo_palabras.readline().rstrip("\n")
-
-        if len(nueva_palabra) <= cantidad_caracteres:
-            if not nueva_palabra in palabras_seleccionadas:
-                return nueva_palabra
-            else:
-                return buscar_palabra(cantidad_caracteres)
+    nueva_palabra = archivo_palabras.readline().rstrip("\n")
+    
+    if len(nueva_palabra) <= cantidad_caracteres:
+        if not nueva_palabra in palabras_seleccionadas:
+            return nueva_palabra
         else:
             return buscar_palabra(cantidad_caracteres)
-    except:
-        print("[ERROR] Ocurrio un error al abrir el archivo")     
+    else:
+        return buscar_palabra(cantidad_caracteres)
 
 # Funcion que devuelve cantidad de palabras en el archivo | PARAMETROS: {}
 def contar_palabras():
-    try:
-        contador = 0
+    contador = 0
 
-        while archivo_palabras.readline() != "":
-            contador += 1
+    while archivo_palabras.readline() != "":
+        contador += 1
 
-        return contador
-    except:
-        print("[ERROR] Ocurrio un error al abrir el archivo")
-    finally:
-        archivo_palabras.seek(0)       
-
+    archivo_palabras.seek(0)   
+    return contador
 
 # Funcion para mostrar la sopa de letras | PARAMETROS: {}
 def mostrar_sopa():
@@ -264,46 +259,39 @@ def mostrar_sopa():
 
 # Funcion para seleccionar palabras del archivo | PARAMETROS: { 1: 'Nivel de dificultad' }
 def seleccionar_palabras(dificultad):
-    try:
+    linea = archivo_palabras.readline()
+    cantidad_palabras = contar_palabras()
+    cantidad_f_c = nivel_dificultad[dificultad]["cantidad_f_c"]
+    cantidad_palabras_seleccionadas = nivel_dificultad[dificultad]["palabras"]
+    contador = 0
+
+    n1 = randint(0, cantidad_palabras - cantidad_palabras_seleccionadas) 
+    n2 = n1 + cantidad_palabras_seleccionadas
+    #n1 = 0
+    #n2 = 12
+
+    while linea:
+        palabra = linea.rstrip("\n")
+
+        if contador >= n1 and contador < n2:
+            if len(palabra) > cantidad_f_c:
+                nueva_palabra = buscar_palabra(cantidad_f_c)
+                palabras_seleccionadas.append(nueva_palabra)
+            else:
+                palabras_seleccionadas.append(palabra)
+
+        contador += 1
         linea = archivo_palabras.readline()
-
-        cantidad_palabras = contar_palabras()
-        cantidad_f_c = nivel_dificultad[dificultad]["cantidad_f_c"]
-        cantidad_palabras_seleccionadas = nivel_dificultad[dificultad]["palabras"]
-
-        contador = 0
-
-        n1 = randint(0, cantidad_palabras - cantidad_palabras_seleccionadas) 
-        n2 = n1 + cantidad_palabras_seleccionadas
-        #n1 = 0
-        #n2 = 12
-
-        while linea:
-            palabra = linea.rstrip("\n")
-
-            if contador >= n1 and contador < n2:
-                if len(palabra) > cantidad_f_c:
-                    nueva_palabra = buscar_palabra(cantidad_f_c)
-                    palabras_seleccionadas.append(nueva_palabra)
-                else:
-                    palabras_seleccionadas.append(palabra)
-
-            contador += 1
-            linea = archivo_palabras.readline()
-            
-
-        return palabras_seleccionadas
-    except:
-        print("[ERROR] Ocurrio un error al abrir el archivo")
-    finally:
-        archivo_palabras.seek(0)       
-
+        
+    archivo_palabras.seek(0)       
+    return palabras_seleccionadas
+        
 # Funcion para rellenar la matriz con letras alaeatorias | PARAMETROS: {}
 def rellenar_matriz():
     for f in range(len(sopa_de_letras)):
         for c in range(len(sopa_de_letras)):
             if sopa_de_letras[f][c] == "":
-                sopa_de_letras[f][c] = "-"#abecedario[randint(0,26)]
+                sopa_de_letras[f][c] = abecedario[randint(0,26)]
 
 # Funcion para generar la sopa de letras | PARAMETROS: { 1: 'Nivel de dificultad' }
 def generar_sopa(dificultad):
@@ -323,7 +311,7 @@ def generar_sopa(dificultad):
         elif orientacion == 1:
             insertar_vertical(palabra, dificultad)
         
-    #rellenar_matriz()
+    rellenar_matriz()
 
 # Funcion para preguntar al usuario la palabra encontrada | PARAMETROS: {}
 def input_encontrar():
