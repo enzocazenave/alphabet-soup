@@ -259,16 +259,14 @@ def mostrar_sopa():
 
 # Funcion para seleccionar palabras del archivo | PARAMETROS: { 1: 'Nivel de dificultad' }
 def seleccionar_palabras(dificultad):
-    linea = archivo_palabras.readline()
     cantidad_palabras = contar_palabras()
+    linea = archivo_palabras.readline()
     cantidad_f_c = nivel_dificultad[dificultad]["cantidad_f_c"]
     cantidad_palabras_seleccionadas = nivel_dificultad[dificultad]["palabras"]
     contador = 0
 
     n1 = randint(0, cantidad_palabras - cantidad_palabras_seleccionadas) 
     n2 = n1 + cantidad_palabras_seleccionadas
-    #n1 = 0
-    #n2 = 12
 
     while linea:
         palabra = linea.rstrip("\n")
@@ -281,8 +279,9 @@ def seleccionar_palabras(dificultad):
                 palabras_seleccionadas.append(palabra)
 
         contador += 1
-        linea = archivo_palabras.readline()
         
+        linea = archivo_palabras.readline()
+
     archivo_palabras.seek(0)       
     return palabras_seleccionadas
         
@@ -341,6 +340,7 @@ def input_encontrar():
             encontrar_palabra(palabra_encontrada_info)
             palabras_ingresadas.remove(palabra_encontrada_info)
             print(f"Te quedan por encontrar { len(palabras_ingresadas) } palabras!")
+            print("\a")
             mostrar_sopa()
         else:
             print(f"La palabra '{ palabra_encontrada }' no existe en la sopa de letras")
