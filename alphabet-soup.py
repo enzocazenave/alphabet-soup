@@ -146,7 +146,7 @@ def insertar_horizontal(palabra, dificultad):
         inicio = randint(0, longitud_sopa  - longitud_palabra)
     else:
         inicio = 0
-
+    
     while not revisar_posicion(palabra_a_ingresar, 0, inicio, fila):
         fila = randint(0, longitud_sopa)
 
