@@ -2,17 +2,17 @@
     NIVELES_DIFICULTAD: {
         FACIL: {
             6 PALABRAS,
-            12x12,
+            14x14,
             HORIZONTALES
         },
         INTERMEDIO: {
             7 PALABRAS,
-            14x14,
+            16x16,
             HORIZONTALES Y VERTICALES
         },
         DIFICIL: {
             8 PALABRAS,
-            16x16,
+            18x18,
             HORIZONTALES, VERTICALES.
         },
         EXTREMO: {
@@ -31,7 +31,7 @@ archivo_palabras = open("palabras.txt")
 sopa_de_letras = []
 palabras_seleccionadas = []
 palabras_ingresadas = []
-nivel_dificultad = [{ "palabras": 6, "cantidad_f_c": 12 },{ "palabras": 7, "cantidad_f_c": 14 },{ "palabras": 8, "cantidad_f_c": 16 },{ "palabras": 12, "cantidad_f_c": 20 }]
+nivel_dificultad = [{ "palabras": 6, "cantidad_f_c": 14 },{ "palabras": 7, "cantidad_f_c": 16 },{ "palabras": 8, "cantidad_f_c": 18 },{ "palabras": 12, "cantidad_f_c": 20 }]
 abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 abecedario_especial = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
@@ -125,6 +125,8 @@ def revisar_posicion(palabra, orientacion, inicio, fila_columna):
             except IndexError:
                 break
 
+        print(palabra, orientacion, inicio, fila_columna)
+
     return entra
 
 # Funcion para insertar palabras en horizontal | PARAMETROS: { 1: 'Palabra' }
@@ -133,7 +135,7 @@ def insertar_horizontal(palabra, dificultad):
     caracteres_palabra = list(palabra)
     palabra_a_ingresar = palabra
     longitud_palabra = len(caracteres_palabra)
-    longitud_sopa = len(sopa_de_letras)
+    longitud_sopa = len(sopa_de_letras) - 1
     fila = randint(0, longitud_sopa)
     al_reves = randint(0, 1)
     
@@ -181,7 +183,7 @@ def insertar_vertical(palabra, dificultad):
     caracteres_palabra = list(palabra)
     palabra_a_ingresar = palabra
     longitud_palabra = len(caracteres_palabra)
-    longitud_sopa = len(sopa_de_letras)
+    longitud_sopa = len(sopa_de_letras) - 1
     columna = randint(0, longitud_sopa)
     al_reves = randint(0, 1)
     
