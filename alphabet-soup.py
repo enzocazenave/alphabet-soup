@@ -141,6 +141,8 @@ def insertar_horizontal(palabra, dificultad):
         if al_reves == 1:
             caracteres_palabra.reverse()
             palabra_a_ingresar = palabra[::-1]
+    else:
+        al_reves = 0
 
     if (longitud_sopa - longitud_palabra) > 0:
         inicio = randint(0, longitud_sopa  - longitud_palabra)
@@ -187,6 +189,8 @@ def insertar_vertical(palabra, dificultad):
         if al_reves == 1:
             caracteres_palabra.reverse()
             palabra_a_ingresar = palabra[::-1]
+    else:
+        al_reves = 0
 
     if (longitud_sopa - longitud_palabra) > 0:
         inicio = randint(0, longitud_sopa  - longitud_palabra)
@@ -360,8 +364,10 @@ def comenzar_juego():
         except ValueError:
             print("[ERROR] Debes ingresar un nivel de dificultad valido entre 1 y 4.")
 
+    print('\a')
     generar_sopa(dificultad - 1)
     cerrar_archivo()
+    borrar_consola()
     mostrar_sopa()
     input_encontrar()
 
