@@ -27,7 +27,14 @@ import os
 from random import randint
 
 # Variables necesarias
-archivo_palabras = open("palabras.txt")
+archivo_palabras = None
+
+try:
+    archivo_palabras = open("palabras.txt")
+except FileNotFoundError:
+    print("[ERROR] Archivo no encontrado")
+    pass
+
 sopa_de_letras = []
 palabras_seleccionadas = []
 palabras_ingresadas = []
