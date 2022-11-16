@@ -1,39 +1,12 @@
-"""
-    NIVELES_DIFICULTAD: {
-        FACIL: {
-            6 PALABRAS,
-            14x14,
-            HORIZONTALES
-        },
-        INTERMEDIO: {
-            7 PALABRAS,
-            16x16,
-            HORIZONTALES Y VERTICALES
-        },
-        DIFICIL: {
-            8 PALABRAS,
-            18x18,
-            HORIZONTALES, VERTICALES.
-        },
-        EXTREMO: {
-            12 PALABRAS,
-            20x20,
-            HORIZONTALES, VERTICALES Y AL REVES.
-        }
-    }
-"""
-
 import os
 from random import randint
 
-# Variables necesarias
 archivo_palabras = None
 
 try:
     archivo_palabras = open("palabras.txt")
 except FileNotFoundError:
     print("[ERROR] Archivo no encontrado")
-    pass
 
 sopa_de_letras = []
 palabras_seleccionadas = []
@@ -150,8 +123,6 @@ def revisar_posicion(palabra, orientacion, inicio, fila_columna):
                     contador += 1
             except IndexError:
                 break
-
-        print(palabra, orientacion, inicio, fila_columna)
 
     return entra
 
