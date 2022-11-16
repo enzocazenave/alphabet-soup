@@ -66,7 +66,26 @@ def mostrar_palabras_restantes():
 
         print(f"- { palabra['palabra'] } | {orientacion} | { fila_columna } | Inicia en: { palabra['inicio'] + 1 }")
 
-# Funcion para resalatar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
+# Funcion para resaltar la palabra encontrada en la sopa de letras | PARAMETROS: { 1: 'Informacion de palabra' }
+
+"""
+    Eliminariamos el for que se encuentra arriba y la lista del abecedario
+    en mayuscula.
+
+    if palabra["orientacion"] == 0:
+        for c in range(palabra["inicio"], len(palabra["palabra"]) + palabra["inicio"]):
+            try:
+                sopa_de_letras[palabra["fila"]][c] = sopa_de_letras[palabra["fila"]][c].upper()
+            except IndexError:
+                break
+    elif palabra["orientacion"] == 1:
+        for f in range(palabra["inicio"], len(palabra["palabra"]) + palabra["inicio"]):
+            try:
+                sopa_de_letras[f][palabra["columna"]] = sopa_de_letras[f][palabra["columna"]].upper()
+            except IndexError:
+                break
+"""
+
 def encontrar_palabra(palabra):
     caracteres_palabra = list(palabra["palabra"])
     caracteres_palabra_especial = []
@@ -79,7 +98,7 @@ def encontrar_palabra(palabra):
         letra_index = abecedario.index(letra)
         caracter_especial = abecedario_especial[letra_index]
         caracteres_palabra_especial.append(caracter_especial)
-
+    
     if palabra["orientacion"] == 0:
         for c in range(palabra["inicio"], len(sopa_de_letras)):
             try:
@@ -103,7 +122,7 @@ def revisar_posicion(palabra, orientacion, inicio, fila_columna):
 
     if orientacion == 0:
         for c in range(inicio, len(sopa_de_letras)):
-            try: 
+            try:
                 if sopa_de_letras[fila_columna][c] != caracteres_palabra[contador]:
                     if sopa_de_letras[fila_columna][c] == "":
                         entra = True
@@ -144,7 +163,7 @@ def insertar_horizontal(palabra, dificultad):
     longitud_palabra = len(caracteres_palabra)
     longitud_sopa = len(sopa_de_letras) - 1
     fila = randint(0, longitud_sopa)
-    al_reves = randint(0, 1)
+    al_reves = randint(0, 1) 
     
     if dificultad == 3:
         if al_reves == 1:
@@ -154,7 +173,7 @@ def insertar_horizontal(palabra, dificultad):
         al_reves = 0
 
     if (longitud_sopa - longitud_palabra) > 0:
-        inicio = randint(0, longitud_sopa  - longitud_palabra)
+        inicio = randint(0, longitud_sopa  - longitud_palabra) 
     else:
         inicio = 0
     
@@ -236,7 +255,7 @@ def insertar_vertical(palabra, dificultad):
 def cerrar_archivo():
     try:
         archivo_palabras.close()
-    except NameError:
+    except FileNotFoundError:
         print("[ERROR] Archivo no encontrado")
         pass
 
@@ -259,7 +278,7 @@ def contar_palabras():
     while archivo_palabras.readline() != "":
         contador += 1
 
-    archivo_palabras.seek(0)   
+    archivo_palabras.seek(0)
     return contador
 
 # Funcion para mostrar la sopa de letras | PARAMETROS: {}
